@@ -1,8 +1,12 @@
+CFLAGS = -O2 -Wall
+FRAMEWORKS = -framework ApplicationServices -framework CoreFoundation -framework Foundation -framework Security -framework SystemConfiguration
+
+
 default: build/wifi_monitor
 
-build/wifi_monitor: src/WifiMonitor.m src/WifiMonitor.h src/WifiPreferences.m src/WifiPreferences.h
+build/wifi_monitor: clean src/WifiMonitor.m src/WifiMonitor.h src/WifiPreferences.m src/WifiPreferences.h
 	-mkdir build
-	gcc src/*m -Wall -O2 -o build/wifi_monitor -framework ApplicationServices -framework CoreFoundation -framework Foundation -framework Security -framework SystemConfiguration
+	gcc ${CFLAGS} ${FRAMEWORKS} src/*m -o build/wifi_monitor
 
 install: build/wifi_monitor
 	install build/wifi_monitor /usr/local/bin

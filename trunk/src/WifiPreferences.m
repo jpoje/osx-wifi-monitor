@@ -10,7 +10,7 @@
 
 #import "WifiPreferences.h"
 
-extern VERBOSE;
+extern int VERBOSE;
 
 // These go here rather than in the header because we don't want anyone else to go mucking with them
 #define KEYCHAIN_SERVICE "wifi_monitor_testing"
@@ -97,7 +97,9 @@ extern VERBOSE;
 	for (i = 2 + VERBOSE; i < size; i++) {
 		NSArray *pref = [[[NSString alloc] initWithCString:prefarray[i] encoding:enc]
 				componentsSeparatedByString:@"="];
-		[prefs setValue:[pref objectAtIndex:1] forKey:[pref objectAtIndex:0]];
+		if ([pref count] == 2) {
+			[prefs setValue:[pref objectAtIndex:1] forKey:[pref objectAtIndex:0]];
+		}
 	}
 	
 	// now extract the new prefs

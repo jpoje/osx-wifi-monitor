@@ -12,6 +12,10 @@ install: build/wifi_monitor
 	install build/wifi_monitor /usr/local/bin
 	install -m 0664 src/WifiMonitor.plist ~/Library/LaunchAgents
 
+uninstall:
+	-rm -f /usr/local/bin/wifi_monitor
+	-rm -f ~/Library/LaunchAgents/WifiMonitor.plist
+
 clean:
 	-rm -rf build
 

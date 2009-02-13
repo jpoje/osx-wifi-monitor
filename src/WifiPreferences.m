@@ -13,7 +13,7 @@
 extern int VERBOSE;
 
 // These go here rather than in the header because we don't want anyone else to go mucking with them
-#define KEYCHAIN_SERVICE "wifi_monitor_testing"
+#define KEYCHAIN_SERVICE "wifi_monitor"
 
 #define PREFS_ROOT "com.wifi_monitor"
 #define PREFS_NETWORK_IPVER "IPVersion"

@@ -20,6 +20,7 @@ int VERBOSE = 0;
 
 - (id) init;
 - (void) reload;
+- (void) execResponse;
 - (void) dealloc;
 
 @end

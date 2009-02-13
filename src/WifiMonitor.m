@@ -87,7 +87,7 @@ void updateCallBack(SCDynamicStoreRef store, CFArrayRef changedKeys, void *info)
 	return self;
 }
 
-// when the status is changed we check to see if it's an SSID we need to do something for and react accordingly
+// when the status is changed we check to see if it's an SSID we need to do something for
 - (void) reload {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
@@ -99,31 +99,36 @@ void updateCallBack(SCDynamicStoreRef store, CFArrayRef changedKeys, void *info)
 	
 	// if the SSID is what we're looking for, use HTTP(S) to log in
 	if ([[values objectForKey:@"SSID_STR"] isEqualToString:[prefs getSSID]]) {
-		sleep(1);
-		
-		NSStringEncoding enc = NSUTF8StringEncoding;
-		NSError *err;		
-		NSURLResponse *response;
-		NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[prefs getLoginUrl]];
-		if ([[prefs getPOSTData] length] > 0) {
-			[request setHTTPMethod:@"POST"];
-			[request setHTTPBody:[[prefs getPOSTData] dataUsingEncoding:enc]];
-		}
-		
-		NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
-		
-		if (data == nil) {
-			NSLog(@"Connection failed - error: %@ %@", [err localizedDescription]
-					, [[err userInfo] objectForKey:NSErrorFailingURLStringKey]);
-		} else {
-			NSString *s = [[NSString alloc] initWithData:data encoding:enc];
-			if (VERBOSE) NSLog(@"%d chars received from POST", [s length]);
-			[s release];
-		}
+		[self execResponse];
 	}
 	
 	[values release];
 	[pool release];
+}
+
+// this executes when we associate to the appropriate SSID
+- (void) execResponse {
+	sleep(1);
+	
+	NSStringEncoding enc = NSUTF8StringEncoding;
+	NSError *err;		
+	NSURLResponse *response;
+	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[prefs getLoginUrl]];
+	if ([[prefs getPOSTData] length] > 0) {
+		[request setHTTPMethod:@"POST"];
+		[request setHTTPBody:[[prefs getPOSTData] dataUsingEncoding:enc]];
+	}
+	
+	NSData *data = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:&err];
+	
+	if (data == nil) {
+		NSLog(@"Connection failed - error: %@ %@", [err localizedDescription]
+				, [[err userInfo] objectForKey:NSErrorFailingURLStringKey]);
+	} else {
+		NSString *s = [[NSString alloc] initWithData:data encoding:enc];
+		if (VERBOSE) NSLog(@"%d chars received from POST", [s length]);
+		[s release];
+	}
 }
 
 - (void) dealloc {

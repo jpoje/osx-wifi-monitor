@@ -158,6 +158,9 @@ extern int VERBOSE;
 	} else {
 		if (VERBOSE) NSLog(@"Couldn't get data from Keychain");
 		POSTData = @"";
+		
+		/*NSLog(@"%s", GetMacOSStatusErrorString(status));
+		NSLog(@"%s", GetMacOSStatusCommentString(status));*/
 	}
 }
 

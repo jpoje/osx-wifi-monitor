@@ -11,7 +11,6 @@ build/wifi_monitor: src/WifiMonitor.m src/WifiMonitor.h src/WifiPreferences.m sr
 install: build/wifi_monitor
 	install build/wifi_monitor /usr/local/bin
 	install -m 0644 dist_skel/WifiMonitor/resources/WifiMonitor.plist ~/Library/LaunchAgents
-	#launchctl load ~/Library/LaunchAgents/WifiMonitor.plist
 
 uninstall:
 	-rm -f /usr/local/bin/wifi_monitor
@@ -20,7 +19,7 @@ uninstall:
 package: build/wifi_monitor
 	cp -R dist_skel/ build/dist/
 	cp doc/wifi_monitor.1 build/dist/WifiMonitor/doc/
-	cp doc/README build/dist/WifiMonitor/
+	cp doc/README.txt build/dist/WifiMonitor/
 	cp build/wifi_monitor build/dist/WifiMonitor/resources/
 	export COPYFILE_DISABLE=true
 	tar czf build/WifiMonitor-${VERSION}.tgz -C build/dist WifiMonitor/

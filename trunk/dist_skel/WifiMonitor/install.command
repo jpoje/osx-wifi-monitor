@@ -10,7 +10,7 @@ read -e POST
 
 echo
 
-install resources/wifi_monitor /usr/local/bin
+sudo install resources/wifi_monitor /usr/local/bin
 wifi_monitor -storePrefs -ssid=$SSID -login_url=$URL -post_data=$POST
 install -m 0644 resources/WifiMonitor.plist ~/Library/LaunchAgents
 

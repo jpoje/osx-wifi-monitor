@@ -1,4 +1,4 @@
-rm -f /usr/local/bin/wifi_monitor
+sudo rm -f /usr/local/bin/wifi_monitor
 rm -f ~/Library/LaunchAgents/WifiMonitor.plist
 
 echo

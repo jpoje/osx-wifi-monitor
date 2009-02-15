@@ -8,8 +8,12 @@ read -e URL
 echo Log in with this POST data:
 read -e POST
 
+echo
+
 install resources/wifi_monitor /usr/local/bin
 wifi_monitor -storePrefs -ssid=$SSID -login_url=$URL -post_data=$POST
-install -m 0664 resources/WifiMonitor.plist ~/Library/LaunchAgents
-launchctl load ~/Library/LaunchAgents/WifiMonitor.plist
+install -m 0644 resources/WifiMonitor.plist ~/Library/LaunchAgents
+
+echo
+echo INSTALL COMPLETE - wifi_monitor will run automatically the next time you log in.
 

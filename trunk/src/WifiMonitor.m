@@ -126,7 +126,7 @@ void updateCallBack(SCDynamicStoreRef store, CFArrayRef changedKeys, void *info)
 				, [[err userInfo] objectForKey:NSErrorFailingURLStringKey]);
 	} else {
 		NSString *s = [[NSString alloc] initWithData:data encoding:enc];
-		if (VERBOSE) NSLog(@"%d chars received from POST", [s length]);
+		if (VERBOSE) NSLog(@"received from POST: [%@]", s);
 		[s release];
 	}
 }

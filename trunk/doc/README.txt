@@ -28,11 +28,11 @@ configuration:
     using only the preference flags you wish to change -
         * wifi_monitor -v -storePrefs [prefs]
         * [prefs]=
-            -ssid SOME_SSID
-            -login_url SOME_URL
-            -post_data SOME_DATA
-            -interface enX
-            -ip_version X
+            -ssid=SOME_SSID
+            -login_url=SOME_URL
+            -post_data=SOME_DATA
+            -interface=enX
+            -ip_version=X
     Example for changing the SSID to "super_hax":
-        wifi_monitor -storePrefs -ssid super_hax
+        wifi_monitor -storePrefs -ssid=super_hax
 

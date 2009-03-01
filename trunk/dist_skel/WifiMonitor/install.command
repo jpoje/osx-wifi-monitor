@@ -12,9 +12,12 @@ echo
 
 P="`which "$0"`"
 P="`dirname "$P"`"
+
 sudo install "$P"/resources/wifi_monitor /usr/local/bin
 wifi_monitor -storePrefs -ssid=$SSID -login_url=$URL -post_data=$POST
-install -m 0644 "$P"/resources/WifiMonitor.plist ~/Library/LaunchAgents/WifiMonitor.plist
+
+[ -e ~/Library/LaunchAgents ] || mkdir ~/Library/LaunchAgents
+install -m 0644 "$P"/resources/WifiMonitor.plist ~/Library/LaunchAgents
 
 echo
 echo INSTALL COMPLETE - wifi_monitor will run automatically the next time you log in.

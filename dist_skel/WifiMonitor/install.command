@@ -1,13 +1,14 @@
-#!/bin/bash
+#!/bin/bash -e
 
 
-echo Act when associating to this SSID:
+echo
+echo "These settings can be changed after installation, see the README."
+echo "> Act when associating to this SSID:"
 read -e SSID
-echo Log in to this URL:
+echo "> Log in to this URL:"
 read -e URL
-echo Log in with this POST data:
+echo "> Log in with this POST data:"
 read -e POST
-
 echo
 
 P="`which "$0"`"

@@ -1,3 +1,4 @@
+#summary Overview of installation and usage
 #labels Phase-Support
 Copied from README.txt until I have something more useful to put here:
 

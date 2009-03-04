@@ -1,5 +1,5 @@
 #summary Overview of installation and usage
-#labels Phase-Support
+#labels Phase-Support,Featured
 Copied from README.txt until I have something more useful to put here:
 
 

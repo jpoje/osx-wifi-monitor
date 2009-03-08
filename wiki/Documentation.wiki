@@ -14,12 +14,9 @@ installation:
     Double-click on the install.command file, enter the requested information, 
     then provide your password so that the program can be installed in a 
     system directory.  The info required is as follows -
-        * SSID: the particular SSID which you want to take action on when 
-            associating to it
-        * login URL: the URL you want the program to send data to when 
-            associating to the selected SSID
-        * POST data: the POST data you want to send to the login URL when 
-            associating to the selected SSID
+        * SSID: the particular SSID which you want to take action on when associating to it
+        * login URL: the URL you want the program to send data to when associating to the selected SSID
+        * POST data: the POST data you want to send to the login URL when associating to the selected SSID
 
 uninstallation:
     Double-click on the uninstall.command file and enter your password.

@@ -28,7 +28,7 @@ int main (int argc, const char *argv[]) {
 			[prefs storePrefs:argv size:argc];
 			
 			// restart daemon (if running) - popen() is an alternative
-			system("kill -HUP `ps -e | grep wifi_monitor | egrep -m 1 -v \"grep|$PPID\" | awk '{print $1}'`");
+			system("kill -HUP `ps -e | grep wifi_monitor | egrep -m 1 -v \"grep|$PPID\" | awk '{print $1}'` &> /dev/null");
 
 			// quit
 			return 0;

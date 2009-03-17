@@ -27,14 +27,20 @@ int main (int argc, const char *argv[]) {
 			WifiPreferences *prefs = [[WifiPreferences alloc] init];
 			[prefs storePrefs:argv size:argc];
 			
-			// restart daemon (if running)
-			//TODO
-			
+			// restart daemon (if running) - popen() is an alternative
+			system("kill -HUP `ps -e | grep wifi_monitor | egrep -m 1 -v \"grep|$PPID\" | awk '{print $1}'`");
+
 			// quit
 			return 0;
 		}
 	}
 	
+	// register our SIGHUP handler for pref reloading
+	struct sigaction sig_struct;
+	sig_struct.sa_handler = handleSIGHUP;
+	sigemptyset(&sig_struct.sa_mask);
+	sigaction(SIGHUP, &sig_struct, NULL);
+
 	// run the daemon
 	WifiMonitor *monitor = [[WifiMonitor alloc] init];
 	CFRunLoopRun();
@@ -43,6 +49,11 @@ int main (int argc, const char *argv[]) {
 	[pool release];
 			
     return 0;
+}
+
+// handles SIGHUP for rereading updated prefs
+void handleSIGHUP(int sig) {
+	prefsNeedReload = 1;
 }
 
 // call back function for state change updates - just calls reload
@@ -91,9 +102,16 @@ void updateCallBack(SCDynamicStoreRef store, CFArrayRef changedKeys, void *info)
 - (void) reload {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
+	// reload prefs if needed
+	if (prefsNeedReload) {
+		prefsNeedReload = 0;
+		if (VERBOSE) NSLog(@"Reading updated prefs");
+		[prefs loadPrefs];
+	}
+
 	// get the updated info
 	NSString *interface = [NSString stringWithFormat:@"State:/Network/Interface/%@/AirPort", [prefs getInterface]];
-	NSDictionary *values = (NSDictionary *)SCDynamicStoreCopyValue(store, (CFStringRef)interface );
+	NSDictionary *values = (NSDictionary *)SCDynamicStoreCopyValue(store, (CFStringRef)interface);
 	
 	if (VERBOSE) NSLog(@"SSID_STR: [%@]", [values objectForKey:@"SSID_STR"]);
 	

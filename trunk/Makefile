@@ -5,7 +5,7 @@ FRAMEWORKS = -framework ApplicationServices -framework CoreFoundation -framework
 default: build/wifi_monitor
 
 build/wifi_monitor: src/WifiMonitor.m src/WifiMonitor.h src/WifiPreferences.m src/WifiPreferences.h
-	-mkdir build
+	[ -e build ] || mkdir build
 	gcc ${CFLAGS} ${FRAMEWORKS} src/*m -o build/wifi_monitor
 
 install: build/wifi_monitor

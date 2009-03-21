@@ -69,7 +69,8 @@ extern int VERBOSE;
 	
 	NSString* loginurl = (NSString *)CFPreferencesCopyValue(CFSTR(PREFS_LOGINURL), appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 	if (loginurl == NULL) {
-		if (VERBOSE) NSLog(@"No LoginUrl preference found. Default is https://auth.lawn.gatech.edu/index.php");
+		if (VERBOSE) NSLog(@"No LoginUrl preference found. Default is (testing) http://www.snee.com/xml/crud/posttest.cgi?blarg=x");
+			//https://auth.lawn.gatech.edu/index.php
 		[loginurl release];
 		loginurl = [@"http://www.snee.com/xml/crud/posttest.cgi?blarg=x" retain];
 	} else {

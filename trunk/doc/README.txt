@@ -36,3 +36,6 @@ configuration:
     Example for changing the SSID to "super_hax":
         wifi_monitor -storePrefs -ssid=super_hax
 
+	If you need to use an SSID with a space in the name, configure like so:
+		defaults write com.wifi_monitor SSID "some ssid"
+

@@ -37,6 +37,7 @@ extern int VERBOSE;
 - (void) loadPrefs {
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	
+	[IPVersion release];
 	NSNumber* ipver = (NSNumber *)CFPreferencesCopyValue(CFSTR(PREFS_NETWORK_IPVER), appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 	if(ipver == NULL) {
 		if (VERBOSE) NSLog(@"No ip version preference found. Default is IPv4");
@@ -47,6 +48,7 @@ extern int VERBOSE;
 		IPVersion = ipver;
 	}
 	
+	[interface release];
 	NSString* iface = (NSString *)CFPreferencesCopyValue(CFSTR(PREFS_NETWORK_INTERFACE), appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 	if(iface == NULL) {
 		if (VERBOSE) NSLog(@"No interface preference found. Default is en1");
@@ -57,6 +59,7 @@ extern int VERBOSE;
 		interface = iface;
 	}
 	
+	[SSID release];
 	NSString* ssid = (NSString *)CFPreferencesCopyValue(CFSTR(PREFS_NETWORK_SSID), appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 	if (ssid == NULL) {
 		if (VERBOSE) NSLog(@"No SSID preference found. Default is XXXX");
@@ -67,12 +70,13 @@ extern int VERBOSE;
 		SSID = ssid;
 	}
 	
+	[loginURL release];
 	NSString* loginurl = (NSString *)CFPreferencesCopyValue(CFSTR(PREFS_LOGINURL), appID, kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
 	if (loginurl == NULL) {
-		if (VERBOSE) NSLog(@"No LoginUrl preference found. Default is (testing) http://www.snee.com/xml/crud/posttest.cgi?blarg=x");
+		if (VERBOSE) NSLog(@"No LoginUrl preference found. Default (for testing) is http://www.snee.com/xml/crud/posttest.cgi?blarg=x");
 			//https://auth.lawn.gatech.edu/index.php
 		[loginurl release];
-		loginurl = [@"http://www.snee.com/xml/crud/posttest.cgi?blarg=x" retain];
+		loginurl = @"http://www.snee.com/xml/crud/posttest.cgi?blarg=x";
 	} else {
 		if (VERBOSE) NSLog(@"LoginURL: %@", loginurl);
 	}
@@ -90,17 +94,22 @@ extern int VERBOSE;
 	// 1 + VERBOSE because of the extra slot -v takes up
 	NSString *cmd = [[NSString alloc] initWithCString:prefarray[1 + VERBOSE] encoding:enc];
 	if (![cmd hasPrefix:@"-storePrefs"]) {
+		[cmd release];
 		return;
 	}
 	
 	NSMutableDictionary *prefs = [NSMutableDictionary dictionaryWithCapacity:(size - 2)];
+	char *split;
 	int i;
 	for (i = 2 + VERBOSE; i < size; i++) {
-		NSArray *pref = [[[NSString alloc] initWithCString:prefarray[i] encoding:enc]
-				componentsSeparatedByString:@"="];
-		if ([pref count] == 2) {
-			[prefs setValue:[pref objectAtIndex:1] forKey:[pref objectAtIndex:0]];
+		split = strchr(prefarray[i], '=');
+		if (split == NULL) {
+			continue;
 		}
+		
+		NSString *pref = [[NSString alloc] initWithCString:prefarray[i] encoding:enc];
+		[prefs setValue:[pref substringFromIndex:(split - prefarray[i] + 1)] 
+				forKey:[pref substringToIndex:(split - prefarray[i])]];
 	}
 	
 	// now extract the new prefs
@@ -130,6 +139,8 @@ extern int VERBOSE;
 	if (s != nil) {
 		[self setPOSTData:s];
 	}
+	
+	[cmd release];
 }
 
 - (const char *) retrieveUsername {
@@ -147,6 +158,8 @@ extern int VERBOSE;
 
 // grabs the info we need from Keychain
 - (void) retrieveKeychainData {
+	[POSTData release];
+
 	const char *username = [self retrieveUsername];
 	void *pwData = nil;
 	UInt32 pwLength = 0;
@@ -158,7 +171,7 @@ extern int VERBOSE;
 		if (VERBOSE) NSLog(@"POST data: %@", POSTData);
 	} else {
 		if (VERBOSE) NSLog(@"Couldn't get data from Keychain");
-		POSTData = @"";
+		POSTData = [@"" retain];
 		
 		/*NSLog(@"%s", GetMacOSStatusErrorString(status));
 		NSLog(@"%s", GetMacOSStatusCommentString(status));*/

@@ -31,6 +31,7 @@ int main (int argc, const char *argv[]) {
 			system("kill -HUP `ps -e | grep wifi_monitor | egrep -m 1 -v \"grep|$PPID\" | awk '{print $1}'` &> /dev/null");
 
 			// quit
+			[pool release];
 			return 0;
 		}
 	}
